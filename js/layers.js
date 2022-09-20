@@ -514,9 +514,9 @@ branches: ["p"],	// Name of resource prestige is based on
 			if (hasMilestone("mp", 1)) return x = x.times(10000000).pow(5.3)
 			if (player.sp.buyables[21].gte(100)) return x = x.times(10000000).pow(2.25)
 		if (player.sp.buyables[21].gte(50)) return x = x.times(10000000).pow(1.9)
-			if (player.sp.buyables[21].gte(25)) return x = x.times(10000000).pow(1.65)
-			if (player.sp.buyables[21].gte(10)) return x = x.times(10000000).pow(1.45)
-				else return x = x.times(10000000).pow(1.2)},
+			if (player.sp.buyables[21].gte(25)) return x = x.times(10000000).pow(1.8)
+			if (player.sp.buyables[21].gte(10)) return x = x.times(10000000).pow(1.6)
+				else return x = x.times(10000000).pow(1.45)},
 		style() {
 			return {
 				'width': '200px',
@@ -544,7 +544,7 @@ branches: ["p"],	// Name of resource prestige is based on
 		effect(x) {
 			if (hasMilestone("mp", 1)) return x = x.times(1e18).pow(4.4)
 			if (player.sp.buyables[31].gte(100)) return x = x.times(1e18).pow(1.35)
-		if (player.sp.buyables[31].gte(50)) return x = x.times(1e18).pow(1.22)
+		if (player.sp.buyables[31].gte(50)) return x = x.times(1e18).pow(1.26)
 			if (player.sp.buyables[31].gte(25)) return x = x.times(1e18).pow(1.2)
 			if (player.sp.buyables[31].gte(10)) return x = x.times(1e18).pow(1.15)
 				else return x = x.times(1e18).pow(1.1)},
@@ -574,10 +574,10 @@ branches: ["p"],	// Name of resource prestige is based on
         },
 		effect(x) {
 			if (hasMilestone("mp", 2)) return x = x.times(3e24).pow(3.37)
-			if (player.sp.buyables[41].gte(100)) return x = x.times(3e24).pow(1.32)
-		if (player.sp.buyables[41].gte(50)) return x = x.times(3e24).pow(1.25)
-			if (player.sp.buyables[41].gte(25)) return x = x.times(3e24).pow(1.23)
-			if (player.sp.buyables[41].gte(10)) return x = x.times(3e24).pow(1.2)
+			if (player.sp.buyables[41].gte(100)) return x = x.times(3e24).pow(1.42)
+		if (player.sp.buyables[41].gte(50)) return x = x.times(3e24).pow(1.28)
+			if (player.sp.buyables[41].gte(25)) return x = x.times(3e24).pow(1.25)
+			if (player.sp.buyables[41].gte(10)) return x = x.times(3e24).pow(1.22)
 				else return x = x.times(3e24).pow(1.18)},
 		style() {
 			return {
@@ -605,11 +605,11 @@ branches: ["p"],	// Name of resource prestige is based on
         },
 		effect(x) {
 			if (hasMilestone("mp", 2)) return x = x.times(3e31).pow(2.37)
-			if (player.sp.buyables[51].gte(100)) return x = x.times(3e31).pow(1.32)
-		if (player.sp.buyables[51].gte(50)) return x = x.times(3e31).pow(1.31)
-			if (player.sp.buyables[51].gte(25)) return x = x.times(3e31).pow(1.28)
-			if (player.sp.buyables[51].gte(10)) return x = x.times(3e31).pow(1.25)
-				else return x = x.times(3e31).pow(1.22)},
+			if (player.sp.buyables[51].gte(100)) return x = x.times(3e31).pow(1.37)
+		if (player.sp.buyables[51].gte(50)) return x = x.times(3e31).pow(1.32)
+			if (player.sp.buyables[51].gte(25)) return x = x.times(3e31).pow(1.31)
+			if (player.sp.buyables[51].gte(10)) return x = x.times(3e31).pow(1.28)
+				else return x = x.times(3e31).pow(1.235)},
 		style() {
 			return {
 				'width': '200px',
@@ -620,7 +620,7 @@ branches: ["p"],	// Name of resource prestige is based on
     },
 									    61: {
 						purchaseLimit: 100,
-        cost(x) { return new Decimal(1e45).times(x.max(1).pow(2.6)) },
+        cost(x) { return new Decimal(1e47).times(x.max(1).pow(2.6)) },
         display() {
                 let data = tmp[this.layer].buyables[this.id]
 				if (player.sp.buyables[61].gte(100)) return "<h3><b>6th dimension | Tier 5 </b></h3>" + "<br> Level: " + formatWhole(player[this.layer].buyables[this.id]) + ". MAX Tier<br> Cost: " + format(data.cost) + " SP <br> Generates " + format(data.effect) + " Super prestige/s"
@@ -635,13 +635,13 @@ branches: ["p"],	// Name of resource prestige is based on
             setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
         },
 		effect(x) {
-			if (hasMilestone("mp", 5)) return x = x.times(3e37).pow(7.4)
-			if (hasMilestone("mp", 0)) return x = x.times(3e37).pow(1.4)
-			if (player.sp.buyables[61].gte(100)) return x = x.times(3e37).pow(1.35)
-		if (player.sp.buyables[61].gte(50)) return x = x.times(3e37).pow(1.3)
-			if (player.sp.buyables[61].gte(25)) return x = x.times(3e37).pow(1.24)
-			if (player.sp.buyables[61].gte(10)) return x = x.times(3e37).pow(1.22)
-				else return x = x.times(3e37).pow(1.21)},
+			if (hasMilestone("mp", 5)) return x = x.times(3e37).pow(7.9)
+			if (hasMilestone("mp", 0)) return x = x.times(3e37).pow(1.9)
+			if (player.sp.buyables[61].gte(100)) return x = x.times(3e37).pow(1.55)
+		if (player.sp.buyables[61].gte(50)) return x = x.times(3e37).pow(1.33)
+			if (player.sp.buyables[61].gte(25)) return x = x.times(3e37).pow(1.31)
+			if (player.sp.buyables[61].gte(10)) return x = x.times(3e37).pow(1.29)
+				else return x = x.times(3e37).pow(1.27)},
 		style() {
 			return {
 				'width': '200px',
@@ -688,12 +688,12 @@ addLayer("mp", {
     },
 		milestones: {
     0: {
-        requirementDescription: "Super Prestige cost of e6.7e27 (5e54 SP)",
+        requirementDescription: "Super Prestige cost of e6.7e28 (5e60 SP)",
         effectDescription() {return "Increase SP generation of 6th dimension by ^0.05"},
         done() { return (player.sp.points.gte(5e54)) },
     },
 	    1: {
-        requirementDescription: "Super Prestige cost of e9.5e28 (1e57 SP)",
+        requirementDescription: "Super Prestige cost of e9.5e29 (1e71 SP)",
         effectDescription() {return "Increase SP generation of 1-3th dimension by ^4.05"},
         done() { return (player.sp.points.gte(1e57)) },
     },
@@ -703,12 +703,12 @@ addLayer("mp", {
         done() { return (player.sp.points.gte(5e89)) },
     },
 			    3: {
-        requirementDescription: "Super Prestige cost of e8.6e44 (1e91 SP)",
+        requirementDescription: "Super Prestige cost of e9.5e44 (1e91 SP)",
         effectDescription() {return "Increase SP generation of 1-2th dimension by ^7.05"},
         done() { return (player.sp.points.gte(1e91)) },
     },
 				    4: {
-        requirementDescription: "Super Prestige cost of e8e55 (5e112 SP)",
+        requirementDescription: "Super Prestige cost of e6.7e55 (5e112 SP)",
         effectDescription() {return "Increase SP generation of 1th dimension by ^90"},
         done() { return (player.sp.points.gte(5e112)) },
     },
