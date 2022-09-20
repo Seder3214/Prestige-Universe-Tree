@@ -6,6 +6,7 @@ addLayer("p", {
         unlocked: true,
 		points: new Decimal(0),
 		prestige: new Decimal(0),
+		pprestige: new Decimal(0),
     }},
     color: "#4BDC13",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
@@ -19,6 +20,7 @@ addLayer("p", {
 		if (hasUpgrade("p", 13)) mult = mult.times(upgradeEffect("p", 13)) 
 		if (hasUpgrade("p", 21)) mult = mult.times(upgradeEffect("p", 21)) 
 		if (hasUpgrade("p", 23)) mult = mult.times(4) 
+		if (hasUpgrade("p", 54)) mult = mult.times(upgradeEffect("p", 54)) 
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -32,6 +34,26 @@ addLayer("p", {
 		if (hasUpgrade("p", 43)) eff = eff.times(upgradeEffect("p", 43))
 		if (hasUpgrade("p", 44)) eff = eff.times(upgradeEffect("p", 44))
 		if (hasUpgrade("p", 51)) eff = eff.add(upgradeEffect("p", 51))
+		if (hasUpgrade("p", 52)) eff = eff.times(upgradeEffect("p", 52))
+		if (hasUpgrade("p", 53)) eff = eff.times(upgradeEffect("p", 53))
+		if (hasUpgrade("p", 61)) eff = eff.times(upgradeEffect("p", 61))
+		if (hasUpgrade("p", 62)) eff = eff.times(upgradeEffect("p", 62))
+		if (hasUpgrade("p", 63)) eff = eff.times(upgradeEffect("p", 63))
+		if (hasUpgrade("p", 64)) eff = eff.times(upgradeEffect("p", 64))
+        return eff;
+    },
+			    effect2() {
+        if (!player.p.buyables[11].gte(1) && (hasUpgrade("p", 32)))
+            return new Decimal(0.1);
+        let eff = Decimal.pow(1);
+	 if (player.p.buyables[11].gte(1)) eff = eff.times(buyableEffect("p", 11));
+	 if (player.p.buyables[12].gte(1)) eff = eff.times(buyableEffect("p", 12));
+	 if (player.p.buyables[13].gte(1)) eff = eff.times(buyableEffect("p", 13));
+	 if (player.p.buyables[14].gte(1)) eff = eff.times(buyableEffect("p", 14));
+	 if (player.p.buyables[15].gte(1)) eff = eff.times(buyableEffect("p", 15));
+	 if (player.p.buyables[16].gte(1)) eff = eff.times(buyableEffect("p", 16));
+	 if (player.p.buyables[17].gte(1)) eff = eff.times(buyableEffect("p", 17));
+	 if (player.p.buyables[18].gte(1)) eff = eff.times(buyableEffect("p", 18));
         return eff;
     },
 	        tabFormat: [
@@ -52,8 +74,16 @@ addLayer("p", {
 									unlocked() {return (hasUpgrade("p", 31))},
                 content: [ 
                     ["blank", "15px"],
-					["display-text", () => "You have " + format(player.p.prestige) + " Prestige-Prestige"],
-                    ["upgrades", [4,5]]	
+					["display-text", () => "You have " + format(player.p.prestige) + " Prestige-Prestige. <br> You are gaining " + formatWhole(tmp.p.effect) + " Prestige-Prestige/s"],
+                    ["upgrades", [4,5,6]]	
+				]		
+            },
+						                    "Prestige-Prestige-Prestige-Prestige": {
+									unlocked() {return (hasUpgrade("p", 32))},
+                content: [ 
+                    ["blank", "15px"],
+					["display-text", () => "You have " + format(player.p.pprestige) + " Prestige-Prestige-Prestige-Prestige. <br> You are gaining " + format(tmp.p.effect2) + " Prestige-Prestige-Prestige-Prestige/s"],
+                    ["buyables", [1,2]]	
 				]		
             },
 	},
@@ -111,12 +141,21 @@ addLayer("p", {
             unlocked() { return true },// Add formatting to the effect
         },
 						32: {
-            title: "Evolution 1★★",
+            title: "Evolution 1✪",
             description: "Unlock a new tab",
             cost: new Decimal(1e24),
             unlocked() { return true },
 				currencyDisplayName: "Prestige-Prestige", // Use if using a nonstandard currency
                 currencyInternalName: "prestige", // Use if using a nonstandard currency
+                currencyLayer: "p",// Add formatting to the effect// Add formatting to the effect
+        },
+								33: {
+            title: "Evolution 2✪",
+            description: "Unlock a new layer",
+            cost: new Decimal(1e175),
+            unlocked() { return true },
+				currencyDisplayName: "P-P-P-Prestige", // Use if using a nonstandard currency
+                currencyInternalName: "pprestige", // Use if using a nonstandard currency
                 currencyLayer: "p",// Add formatting to the effect// Add formatting to the effect
         },
 						41: {
@@ -162,18 +201,200 @@ addLayer("p", {
 							effectDisplay() {return  format(upgradeEffect("p", 44)) + "x"},// Add formatting to the effect
         },
 														51: {
-            title: "★★★★",
+            title: "☆",
             description: "Self-boost Prestige-Prestige by Prestige points amount",
             cost: new Decimal(196875),
-						effect() {return player.p.points},
+						effect() {return player.p.points.max(1)},
             unlocked() { return true },
 				currencyDisplayName: "Prestige-Prestige", // Use if using a nonstandard currency
                 currencyInternalName: "prestige", // Use if using a nonstandard currency
                 currencyLayer: "p",
 							effectDisplay() {return  "+" + format(upgradeEffect("p", 51)) },// Add formatting to the effect
         },
+														52: {
+            title: "☆☆",
+            description: "Self-boost Prestige-Prestige by Prestige points amount",
+            cost: new Decimal(34e6),
+						effect() {return player.p.points.pow(0.21).max(1)},
+            unlocked() { return true },
+				currencyDisplayName: "Prestige-Prestige", // Use if using a nonstandard currency
+                currencyInternalName: "prestige", // Use if using a nonstandard currency
+                currencyLayer: "p",
+							effectDisplay() {return  format(upgradeEffect("p", 52)) + "x" },// Add formatting to the effect
+        },
+																53: {
+            title: "☆☆☆",
+            description: "Self-boost Prestige-Prestige by all effects at once",
+            cost: new Decimal(.8e9),
+			effect() {let ret = Decimal.pow(1.2, player.p.upgrades.length).max(1)
+			return ret},
+				currencyDisplayName: "Prestige-Prestige", // Use if using a nonstandard currency
+                currencyInternalName: "prestige", // Use if using a nonstandard currency
+                currencyLayer: "p",
+							effectDisplay() {return  format(upgradeEffect("p", 53)) + "x" },// Add formatting to the effect
+        },
+																		54: {
+            title: "☆☆☆☆",
+            description: "Boost Prestige point gain by Prestige-Prestige/s",
+            cost: new Decimal(1e10),
+			effect() {return tmp.p.effect.pow(0.15).max(1)},
+				currencyDisplayName: "Prestige-Prestige", // Use if using a nonstandard currency
+                currencyInternalName: "prestige", // Use if using a nonstandard currency
+                currencyLayer: "p",
+							effectDisplay() {return  format(upgradeEffect("p", 54)) + "x" },// Add formatting to the effect
+        },
+				61: {
+            title: "✦",
+            description: "Self-boost Prestige-Prestige gain by Prestige-Prestige/s",
+            cost: new Decimal(5e12),
+			effect() {return tmp.p.effect.pow(0.03).max(1)},
+				currencyDisplayName: "Prestige-Prestige", // Use if using a nonstandard currency
+                currencyInternalName: "prestige", // Use if using a nonstandard currency
+                currencyLayer: "p",
+							effectDisplay() {return  format(upgradeEffect("p", 61)) + "x" },// Add formatting to the effect
+        },
+						62: {
+            title: "✦✦",
+            description: "Self-boost Prestige-Prestige gain by Points",
+            cost: new Decimal(2e13),
+			effect() {return player.points.pow(0.22).max(1)},
+				currencyDisplayName: "Prestige-Prestige", // Use if using a nonstandard currency
+                currencyInternalName: "prestige", // Use if using a nonstandard currency
+                currencyLayer: "p",
+							effectDisplay() {return  format(upgradeEffect("p", 62)) + "x" },// Add formatting to the effect
+        },
+							63: {
+            title: "✦✦✦",
+            description: "Self-boost Prestige-Prestige gain by Points and Prestige-Prestige/s",
+            cost: new Decimal(2e15),
+			effect() {return player.points.pow(0.22).add(tmp.p.effect.pow(0.15)).max(1)},
+				currencyDisplayName: "Prestige-Prestige", // Use if using a nonstandard currency
+                currencyInternalName: "prestige", // Use if using a nonstandard currency
+                currencyLayer: "p",
+							effectDisplay() {return  format(upgradeEffect("p", 63)) + "x" },// Add formatting to the effect
+        },
+									64: {
+            title: "✵",
+            description: "Self-boost Prestige-Prestige gain by Points * Prestige-Prestige/s",
+            cost: new Decimal(8e17),
+			effect() {return player.points.pow(0.12).times(tmp.p.effect.pow(0.18)).max(1)},
+				currencyDisplayName: "Prestige-Prestige", // Use if using a nonstandard currency
+                currencyInternalName: "prestige", // Use if using a nonstandard currency
+                currencyLayer: "p",
+							effectDisplay() {return  format(upgradeEffect("p", 64)) + "x" },// Add formatting to the effect
+        },
 	},
-	    update(diff) {  
+	buyables: {
+				    11: {
+        cost(x) { return new Decimal(1).times(x.pow(2)) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>11</b></h2> <br><br><br>" + "Requirement: " + format(data.cost) + " P-P-P-Prestige <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Effect: " + format(data.effect) + "x to P-P-P-P-Prestige"},
+        canAfford() { return player.p.pprestige.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player.p.pprestige = player.p.pprestige.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {return x = x.pow(1.5)},
+    },
+					    12: {
+        cost(x) { return new Decimal(1000).times(x.pow(3)) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>12</b></h2> <br><br><br>" + "Requirement: " + format(data.cost) + " P-P-P-Prestige <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Effect: " + format(data.effect) + "x to P-P-P-P-Prestige"},
+        canAfford() { return player.p.pprestige.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player.p.pprestige = player.p.pprestige.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {return x = x.pow(3)},
+    },
+						    13: {
+        cost(x) { return new Decimal(2e7).times(x.pow(10)) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>13</b></h2> <br><br><br>" + "Requirement: " + format(data.cost) + " P-P-P-Prestige <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Effect: " + format(data.effect) + "x to P-P-P-P-Prestige"},
+        canAfford() { return player.p.pprestige.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player.p.pprestige = player.p.pprestige.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {return x = x.pow(6)},
+    },
+							    14: {
+        cost(x) { return new Decimal(2e19).times(x.pow(10)) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>14</b></h2> <br><br><br>" + "Requirement: " + format(data.cost) + " P-P-P-Prestige <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Effect: " + format(data.effect) + "x to P-P-P-P-Prestige"},
+        canAfford() { return player.p.pprestige.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player.p.pprestige = player.p.pprestige.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {return x = x.pow(7)},
+    },
+								    15: {
+        cost(x) { return new Decimal(2e42).times(x.pow(10)) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>21</b></h2> <br><br><br>" + "Requirement: " + format(data.cost) + " P-P-P-Prestige <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Effect: " + format(data.effect) + "x to P-P-P-P-Prestige"},
+        canAfford() { return player.p.pprestige.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player.p.pprestige = player.p.pprestige.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {return x = x.pow(3)},
+    },
+									    16: {
+        cost(x) { return new Decimal(2e50).times(x.pow(10)) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>22</b></h2> <br><br><br>" + "Requirement: " + format(data.cost) + " P-P-P-Prestige <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Effect: " + format(data.effect) + "x to P-P-P-P-Prestige"},
+        canAfford() { return player.p.pprestige.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player.p.pprestige = player.p.pprestige.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {return x = x.pow(5)},
+    },
+										    17: {
+        cost(x) { return new Decimal(2e57).times(x.pow(10)) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>23</b></h2> <br><br><br>" + "Requirement: " + format(data.cost) + " P-P-P-Prestige <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Effect: " + format(data.effect) + "x to P-P-P-P-Prestige"},
+        canAfford() { return player.p.pprestige.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player.p.pprestige = player.p.pprestige.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {return x = x.pow(15)},
+    },
+										    18: {
+        cost(x) { return new Decimal(2e110).times(x.pow(10)) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>24</b></h2> <br><br><br>" + "Requirement: " + format(data.cost) + " P-P-P-Prestige <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Effect: " + format(data.effect) + "x to P-P-P-P-Prestige"},
+        canAfford() { return player.p.pprestige.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player.p.pprestige = player.p.pprestige.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {return x = x.pow(20)},
+    },
+	},
+	    update(diff) { 
+	 if (hasUpgrade("p", 32)) {
+player.p.prestige = player.p.prestige.add(tmp.p.effect.times(diff))
+player.p.pprestige = player.p.pprestige.add(tmp.p.effect2.times(diff))
+}		
 	 if (hasUpgrade("p", 31)) {
 player.p.prestige = player.p.prestige.add(tmp.p.effect.times(diff))
 }
