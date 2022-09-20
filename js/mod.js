@@ -13,13 +13,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.01b",
-	name: "Prestige!",
+	num: "0.12b",
+	name: "Prestige-Prestige-Prestige-Prestige!",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.01b</h3><br>
-		- Added Prestige tab.<br>
+	<h3>v0.12b</h3><br>
+		- Added Prestige-Prestige-Prestige-Prestige tab.<br>
 		- Added stuff.`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
