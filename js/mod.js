@@ -13,12 +13,12 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.23b",
+	num: "0.24b",
 	name: "Super Balance!",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.23b</h3><br>
+	<h3>v0.24b</h3><br>
 		- Balancing of SP layer<br>
 		- Added stuff.`
 
