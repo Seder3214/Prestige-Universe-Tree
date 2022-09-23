@@ -2,7 +2,7 @@ let modInfo = {
 	name: "Prestige Universe",
 	id: "presuniv",
 	author: "Seder3214",
-	pointsName: "points",
+	pointsName: "unprestiges",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
@@ -13,13 +13,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.24b",
-	name: "Super Balance!",
+	num: "1.01",
+	name: "Unverse one!",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.24b</h3><br>
-		- Balancing of SP layer<br>
+	<h3>v1.01</h3><br>
+		- Added 2 new layers<br>
 		- Added stuff.`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
@@ -43,6 +43,7 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasMilestone("mp", 11)) return gain = gain.add(1).pow(player.mp.points)
 	if (hasUpgrade("p", 11)) gain = gain.times(2)
 	if (hasUpgrade("p", 12)) gain = gain.times(upgradeEffect("p", 12))
 	if (hasUpgrade("p", 22)) gain = gain.times(upgradeEffect("p", 12).div(3.5))

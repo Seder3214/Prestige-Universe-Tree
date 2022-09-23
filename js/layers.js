@@ -6,7 +6,7 @@ addLayer("p", {
         unlocked: true,
 		points: new Decimal(0),
 		prestige: new Decimal(0),
-		pprestige: new Decimal(0),
+		pprestige: new Decimal(1),
     }},
     color: "#4BDC13",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
@@ -17,6 +17,7 @@ addLayer("p", {
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+		if (hasUpgrade("lp", 21)) mult = mult.mul(1e300).pow(player.lp.points)
 		if (hasUpgrade("p", 13)) mult = mult.times(upgradeEffect("p", 13)) 
 		if (hasUpgrade("p", 21)) mult = mult.times(upgradeEffect("p", 21)) 
 		if (hasUpgrade("p", 23)) mult = mult.times(4) 
@@ -31,6 +32,7 @@ addLayer("p", {
         if (!hasUpgrade("p", 41) && (hasUpgrade("p", 31)))
             return new Decimal(0.1);
         let eff = Decimal.pow(1);
+		if (hasUpgrade("lp", 21)) eff = eff.times(player.lp.points)
 		if (hasUpgrade("p", 42)) eff = eff.times(upgradeEffect("p", 42))
 		if (hasUpgrade("p", 43)) eff = eff.times(upgradeEffect("p", 43))
 		if (hasUpgrade("p", 44)) eff = eff.times(upgradeEffect("p", 44))
@@ -47,6 +49,7 @@ addLayer("p", {
         if (!player.p.buyables[11].gte(1) && (hasUpgrade("p", 32)))
             return new Decimal(0.1);
         let eff = Decimal.pow(1);
+		if (hasUpgrade("lp", 21)) eff = eff.times(player.lp.points.times(1e100))
 	 if (player.p.buyables[11].gte(1)) eff = eff.times(buyableEffect("p", 11));
 	 if (player.p.buyables[12].gte(1)) eff = eff.times(buyableEffect("p", 12));
 	 if (player.p.buyables[13].gte(1)) eff = eff.times(buyableEffect("p", 13));
@@ -158,6 +161,12 @@ addLayer("p", {
 				currencyDisplayName: "P-P-P-Prestige", // Use if using a nonstandard currency
                 currencyInternalName: "pprestige", // Use if using a nonstandard currency
                 currencyLayer: "p",// Add formatting to the effect// Add formatting to the effect
+        },
+										34: {
+            title: "Evolution 3✪",
+            description: "Unlock a new layer",
+            cost: new Decimal(1e20),
+            unlocked() { return true },
         },
 						41: {
             title: "★",
@@ -477,6 +486,8 @@ branches: ["p"],	// Name of resource prestige is based on
             setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
         },
 		effect(x) {
+			if (hasUpgrade("lp", 21)) return x = x.pow(player.lp.points.max(1))
+			if (hasMilestone("myp", 0)) return x = x.pow(110)
 						if (hasMilestone("mp", 4)) return x = x.pow(103.5)
 			if (hasMilestone("mp", 3)) return x = x.pow(13.5)
 			if (hasMilestone("mp", 1)) return x = x.pow(6.45)
@@ -510,6 +521,7 @@ branches: ["p"],	// Name of resource prestige is based on
             setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
         },
 		effect(x) {
+			if (hasMilestone("myp", 0)) return x = x.times(10000000).pow(18)
 			if (hasMilestone("mp", 3)) return x = x.times(10000000).pow(12.35)
 			if (hasMilestone("mp", 1)) return x = x.times(10000000).pow(5.3)
 			if (player.sp.buyables[21].gte(100)) return x = x.times(10000000).pow(2.25)
@@ -542,6 +554,7 @@ branches: ["p"],	// Name of resource prestige is based on
             setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
         },
 		effect(x) {
+			if (hasMilestone("myp", 0)) return x = x.times(1e18).pow(10)
 			if (hasMilestone("mp", 1)) return x = x.times(1e18).pow(4.4)
 			if (player.sp.buyables[31].gte(100)) return x = x.times(1e18).pow(1.35)
 		if (player.sp.buyables[31].gte(50)) return x = x.times(1e18).pow(1.26)
@@ -573,6 +586,11 @@ branches: ["p"],	// Name of resource prestige is based on
             setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
         },
 		effect(x) {
+			if (hasUpgrade("lp", 21)) return x = x.times(3e24).pow(player.lp.points.max(1))
+			if (hasMilestone("mp", 9)) return x = x.times(3e24).pow(player.p.points.min(700).max(1))
+			if (hasMilestone("mp", 8)) return x = x.times(3e24).pow(90)
+			if (hasMilestone("mp", 7)) return x = x.times(3e24).pow(60)
+			if (hasMilestone("myp", 0)) return x = x.times(3e24).pow(30)
 			if (hasMilestone("mp", 2)) return x = x.times(3e24).pow(3.37)
 			if (player.sp.buyables[41].gte(100)) return x = x.times(3e24).pow(1.42)
 		if (player.sp.buyables[41].gte(50)) return x = x.times(3e24).pow(1.28)
@@ -604,6 +622,7 @@ branches: ["p"],	// Name of resource prestige is based on
             setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
         },
 		effect(x) {
+			if (hasMilestone("myp", 0)) return x = x.times(3e31).pow(15)
 			if (hasMilestone("mp", 2)) return x = x.times(3e31).pow(2.37)
 			if (player.sp.buyables[51].gte(100)) return x = x.times(3e31).pow(1.37)
 		if (player.sp.buyables[51].gte(50)) return x = x.times(3e31).pow(1.32)
@@ -637,6 +656,7 @@ branches: ["p"],	// Name of resource prestige is based on
 		effect(x) {
 			if (hasMilestone("mp", 5)) return x = x.times(3e37).pow(7.9)
 			if (hasMilestone("mp", 0)) return x = x.times(3e37).pow(1.9)
+			if (hasMilestone("myp", 0)) return x = x.times(3e37).pow(20)
 			if (player.sp.buyables[61].gte(100)) return x = x.times(3e37).pow(1.55)
 		if (player.sp.buyables[61].gte(50)) return x = x.times(3e37).pow(1.33)
 			if (player.sp.buyables[61].gte(25)) return x = x.times(3e37).pow(1.31)
@@ -670,6 +690,7 @@ addLayer("mp", {
     startData() { return {
         unlocked: false,
 		points: new Decimal(0),
+		pmcd: new Decimal(0),
     }},
     color: "purple",
 	branches: ["p"],
@@ -681,6 +702,8 @@ addLayer("mp", {
     exponent: 3, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+		if (hasUpgrade("lp", 21)) mult = mult.div(1e300).pow(player.lp.points)
+		if (hasMilestone("myp", 8)) mult = mult.div(1e300).pow(33)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -722,8 +745,357 @@ addLayer("mp", {
         effectDescription() {return "Increase Prestige point gain by 60.00x"},
         done() { return (player.mp.points.gte(10)) },
     },
+						    7: {
+        requirementDescription: "14 Mega Prestiges",
+        effectDescription() {return "Increase 4th dimension by ^30"},
+        done() { return (player.mp.points.gte(14)) },
+    },
+						    8: {
+        requirementDescription: "18 Mega Prestiges",
+        effectDescription() {return "Increase 4th dimension by ^30"},
+        done() { return (player.mp.points.gte(18)) },
+    },
+							    9: {
+        requirementDescription: "35 Mega Prestiges",
+        effectDescription() {return "Prestige Points now give a boost to Super prestige gain (softcapped at 700.00x)"},
+        done() { return (player.mp.points.gte(35)) },
+    },
+								    11: {
+        requirementDescription: "46 Mega Prestiges",
+        effectDescription() {return "Boost point gain by Mega Prestige (+ ^1.00 per one)"},
+        done() { return (player.mp.points.gte(46)) },
+    },
 		},
     row: 1, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return true}
+}),
+
+addLayer("myp", {
+    name: "mythic prestige", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "MYP", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+		pmcd: new Decimal(0),
+		mp: new Decimal(0),
+		mpp: new Decimal(0),
+    }},
+			    effect() {
+        if (!hasMilestone("myp", 1))
+            return new Decimal(1);
+        let eff = Decimal.pow(1);
+		if (hasMilestone("myp", 2)) eff = eff.times(player.myp.mp.times(10))
+if (hasMilestone("myp", 4)) eff = eff.times(player.myp.pmcd.min(20))
+if (hasMilestone("myp", 5)) eff = eff.times(player.myp.pmcd.min(6))
+        return eff;
+    },
+		        tabFormat: [
+        "main-display",
+        "prestige-button",
+        ["microtabs", "stuff"],
+        ["blank", "25px"],
+    ],
+	microtabs: {
+    stuff: {
+                    "Milestones": {
+                content: [
+                    ["blank", "15px"],
+                    "milestones"
+                ]
+            },
+			                    "Mastering": {
+									unlocked() {return (hasMilestone("myp", 1))},
+                content: [ 
+                    ["blank", "15px"],
+					["display-text", () => "Prestige Mastering Level: " + formatWhole(player.myp.mp)],
+                    ["upgrades", [4,5,6]],
+		["bar", "pm"],
+	["blank", "15px"],
+["bar", "ppm"],
+	["blank", "15px"],	
+["bar", "sm"],
+	["blank", "15px"],	
+["bar", "mm"]	
+				]		
+            },
+	},
+	},
+    color: "red",
+	branches: ["sp", "mp"],
+    requires: new Decimal(10), // Can be a function that takes requirement increases into account
+    resource: " mythic prestige points", // Name of prestige currency
+    baseResource: "mega prestige points", // Name of resource prestige is based on
+    baseAmount() {return player.mp.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 3, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+		milestones: {
+    0: {
+        requirementDescription: "1 Mythic Prestiges",
+        effectDescription() {return "Boost Super Prestige dimensions"},
+        done() { return (player.myp.points.gte(1)) },
+    },
+    1: {
+        requirementDescription: "2 Mythic Prestiges",
+        effectDescription() {return "Unlock Mastering Tab"},
+        done() { return (player.myp.points.gte(2)) },
+    },
+	    2: {
+        requirementDescription: "Prestige Mastery: Lv. 4 ",
+        effectDescription() {return "Boost Prestige Mastering by its level"},
+        done() { return (player.myp.mp.gte(4)) },
+    },
+		    3: {
+        requirementDescription: "Prestige Mastery: Lv. 15 ",
+        effectDescription() {return "Unlock Prestige-Prestige Mastery"},
+        done() { return (player.myp.mp.gte(15)) },
+    },
+			    4: {
+        requirementDescription: "Prestige Mastery: Lv. 25 ",
+        effectDescription() {return "Boost Prestige Mastering by their progress (softcapped at 20.00x)"},
+        done() { return (player.myp.mp.gte(25)) },
+    },
+				    5: {
+        requirementDescription: "Prestige Mastery: Lv. 50 ",
+        effectDescription() {return "Boost Prestige Mastering by their progress (softcapped at 6.00x)"},
+        done() { return (player.myp.mp.gte(50)) },
+    },
+					    6: {
+        requirementDescription: "Prestige Mastery: Lv. 100 ",
+        effectDescription() {return "Unlock Super Prestige Mastery"},
+        done() { return (player.myp.mp.gte(100)) },
+    },
+						    7: {
+        requirementDescription: "Prestige Mastery: Lv. 200",
+        effectDescription() {return "Unlock Mega Prestige Mastery"},
+        done() { return (player.myp.mp.gte(200)) },
+    },
+							    8: {
+        requirementDescription: "Prestige Mastery: Lv. 500",
+        effectDescription() {return "Boost Mega Prestige gain"},
+        done() { return (player.myp.mp.gte(500)) },
+    },
+    },
+		bars: {
+    pm: {
+        direction: RIGHT,
+        width: 400,
+        height: 30,
+        progress() {return Math.max(0, player.myp.pmcd.div(7).div(player.myp.mp.max(1).min(100).pow(2))) },
+		 instant: true,
+		 unlocked() {return true},
+		 display() {return "Cost stops at 100 lv. Prestige Mastering " + formatWhole(player.myp.pmcd) + " / " + format(player.myp.mp.max(1).min(100).pow(2).times(7))},
+		fillStyle() {
+			return {
+				'background-color': 'gray',
+				'color': 'black'
+			}
+		},
+    },
+	    ppm: {
+        direction: RIGHT,
+        width: 400,
+        height: 30,
+        progress() {return Math.max(0, player.myp.pmcd.div(4).div(player.myp.mp.max(1).min(150).pow(2.05))) },
+		 instant: true,
+		 unlocked() {return (hasMilestone("myp", 3))},
+		 display() {return "Cost stops at 150 lv. Prestige-Prestige Mastering " +formatWhole(player.myp.pmcd) + " / " + format(player.myp.mp.max(1).min(150).pow(2.05).times(4))},
+		fillStyle() {
+			return {
+				'background-color': 'gray',
+				'color': 'black'
+			}
+		},
+    },
+		    sm: {
+        direction: RIGHT,
+        width: 400,
+        height: 30,
+        progress() {return Math.max(0, player.myp.pmcd.div(1.05).div(player.myp.mp.max(1).pow(2.05))) },
+		 instant: true,
+		 unlocked() {return (hasMilestone("myp", 6))},
+		 display() {return "Super Prestige Mastering " +formatWhole(player.myp.pmcd) + " / " + format(player.myp.mp.max(1).pow(2.05).times(1.05))},
+		fillStyle() {
+			return {
+				'background-color': 'gray',
+				'color': 'black'
+			}
+		},
+    },	
+	mm: {
+        direction: RIGHT,
+        width: 400,
+        height: 30,
+        progress() {return Math.max(0, player.myp.pmcd.div(0.25).div(player.myp.mp.max(1).pow(2.05))) },
+		 instant: true,
+		 unlocked() {return (hasMilestone("myp", 7))},
+		 display() {return "Mega Prestige Mastering " +formatWhole(player.myp.pmcd) + " / " + format(player.myp.mp.max(1).pow(2.05).times(0.25))},
+		fillStyle() {
+			return {
+				'background-color': 'gray',
+				'color': 'black'
+			}
+		},
+    },
+		},
+update(diff) {
+				 if (player.myp.pmcd.gte(player.myp.mp.max(1).pow(2.05).times(0.25)) && hasMilestone("myp", 7)) {
+		player.myp.mp = player.myp.mp.add(1)
+				player.myp.pmcd = player.myp.pmcd.div(1000)
+}
+			 if (player.myp.pmcd.gte(player.myp.mp.max(1).pow(2.05).times(1.05)) && hasMilestone("myp", 6)) {
+		player.myp.mp = player.myp.mp.add(1)
+				player.myp.pmcd = player.myp.pmcd.div(1000)
+}
+		 if (player.myp.pmcd.gte(player.myp.mp.max(1).min(150).pow(2.05).times(4)) && hasMilestone("myp", 3)) {
+		player.myp.mp = player.myp.mp.add(1)
+				player.myp.pmcd = player.myp.pmcd.div(1000)
+}
+	 else if (player.myp.pmcd.gte(player.myp.mp.max(1).min(100).pow(2).times(7))) {
+		player.myp.pmcd = player.myp.pmcd.div(1000)
+		player.myp.mp = player.myp.mp.add(1)
+}
+if (hasMilestone("myp", 1)) {
+		player.myp.pmcd = player.myp.pmcd.add(tmp.myp.effect.times(diff))
+}
+},
+    row: 2, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return true}
+}),
+
+addLayer("lp", {
+    name: "Legendary prestige", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "LP", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+				    effect() {
+        if (!hasUpgrade("lp", 11))
+            return new Decimal(1);
+        let eff = Decimal.pow(1);
+		if (hasUpgrade("lp", 12)) eff = eff.add(3)
+if (hasUpgrade("lp", 13)) eff = eff.add(15)
+	if (hasUpgrade("lp", 14)) eff = eff.add(45)
+		if (hasUpgrade("lp", 15)) eff = eff.add(120)
+			if (hasUpgrade("lp", 16)) eff = eff.add(380)
+		if (hasUpgrade("lp", 17)) eff = eff.add(1308)
+		if (hasUpgrade("lp", 18)) eff = eff.add(38000)
+		if (hasUpgrade("lp", 19)) eff = eff.add(380000)
+        return eff;
+    },
+		        tabFormat: [
+        "main-display",
+        "prestige-button",
+        ["microtabs", "stuff"],
+        ["blank", "25px"],
+    ],
+	microtabs: {
+    stuff: {
+                    "L-Prestige": {
+                content: [
+                    ["blank", "15px"],
+                    "upgrades"
+                ]
+            },
+	},
+	},
+		upgrades: {
+        11: {
+            title: "Start again",
+            description: "Start generating 1 LP/s",
+            cost: new Decimal(1),
+            unlocked() { return true },// Add formatting to the effect
+        },
+		        12: {
+            title: "Still all again",
+            description: "Add +3 LP/s",
+            cost: new Decimal(15),
+            unlocked() { return true },// Add formatting to the effect
+        },
+				        13: {
+            title: "Still again...",
+            description: "Add +15 LP/s",
+            cost: new Decimal(80),
+            unlocked() { return true },// Add formatting to the effect
+        },
+						        14: {
+            title: "Will it be always again?",
+            description: "Add +45 LP/s",
+            cost: new Decimal(300),
+            unlocked() { return true },// Add formatting to the effect
+        },
+								        15: {
+            title: "Not again...",
+            description: "Add +120 LP/s",
+            cost: new Decimal(1000),
+            unlocked() { return true },// Add formatting to the effect
+        },
+										        16: {
+            title: "Ok 3 upgrades left... Again...",
+            description: "Add +380 LP/s",
+            cost: new Decimal(3000),
+            unlocked() { return true },// Add formatting to the effect
+        },
+												        17: {
+            title: "Again...",
+            description: "Add +1308 LP/s",
+            cost: new Decimal(8000),
+            unlocked() { return true },// Add formatting to the effect
+        },
+														        18: {
+            title: "Again...",
+            description: "Add +38000 LP/s",
+            cost: new Decimal(20000),
+            unlocked() { return true },// Add formatting to the effect
+        },
+																        19: {
+            title: "Again...",
+            description: "Add +130000 LP/s",
+            cost: new Decimal(380000),
+            unlocked() { return true },// Add formatting to the effect
+        },
+																		        21: {
+            title: "Last chance",
+            description: "Legendary prestige points add an exponent to all prestiges gain",
+            cost: new Decimal(10080000),
+            unlocked() { return true },// Add formatting to the effect
+        },
+		},
+    color: "yellow",
+    requires: new Decimal(1e20), // Can be a function that takes requirement increases into account
+    resource: "legendary prestige points", // Name of prestige currency
+    baseResource: "prestige points", // Name of resource prestige is based on
+    baseAmount() {return player.p.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 3, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+	update(diff) {
+				 if (hasUpgrade("lp", 11)) {
+		player.lp.points = player.lp.points.add(tmp.lp.effect.times(diff))
+}
+	},
+    row: 3, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
