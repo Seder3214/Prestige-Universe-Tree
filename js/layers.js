@@ -762,7 +762,7 @@ addLayer("mp", {
     },
 								    11: {
         requirementDescription: "46 Mega Prestiges",
-        effectDescription() {return "Boost point gain by Mega Prestige (+ ^1.00 per one)"},
+        effectDescription() {return "Boost point gain by Mega Prestige (+ ^5.00 per one)"},
         done() { return (player.mp.points.gte(46)) },
     },
 		},
