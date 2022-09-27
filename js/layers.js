@@ -717,7 +717,7 @@ addLayer("mp", {
     },
 	    1: {
         requirementDescription: "Super Prestige cost of e9.5e29 (1e71 SP)",
-        effectDescription() {return "Increase SP generation of 1-3th dimension by ^4.05"},
+        effectDescription() {return "Increase SP generation of 1-3rd dimension by ^4.05"},
         done() { return (player.sp.points.gte(1e71)) },
     },
 		    2: {
@@ -727,12 +727,12 @@ addLayer("mp", {
     },
 			    3: {
         requirementDescription: "Super Prestige cost of e9.5e44 (1e91 SP)",
-        effectDescription() {return "Increase SP generation of 1-2th dimension by ^7.05"},
+        effectDescription() {return "Increase SP generation of 1-2nd dimension by ^7.05"},
         done() { return (player.sp.points.gte(1e91)) },
     },
 				    4: {
         requirementDescription: "Super Prestige cost of e6.7e55 (5e112 SP)",
-        effectDescription() {return "Increase SP generation of 1th dimension by ^90"},
+        effectDescription() {return "Increase SP generation of 1st dimension by ^90"},
         done() { return (player.sp.points.gte(5e112)) },
     },
 					    5: {
